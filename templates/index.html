@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 10px 0; }
+        .completed { text-decoration: line-through; color: gray; }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form method="POST" action="/add">
+        <input type="text" name="description" placeholder="Enter a task" required>
+        <input type="date" name="date" placeholder="Due date">
+        <input type="text" name="notes" placeholder="Add notes (optional)">
+        <button type="submit">Add Task</button>
+    </form>
+
+    <ul>
+    {% for task in tasks %}
+    <li>
+        {% if task.completed %}
+        <span class="completed">{{ task.description }}</span>
+        {% else %}
+        <span>{{ task.description }}</span>
+        {% endif %}
+        <span>- Due: {{ task.date or "No date" }}</span>
+        <span>- Notes: {{ task.notes or "No notes" }}</span>
+        {% if not task.completed %}
+        <a href="/complete/{{ loop.index0 }}">[Complete]</a>
+        {% endif %}
+        <a href="/delete/{{ loop.index0 }}">[Delete]</a>
+    </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
